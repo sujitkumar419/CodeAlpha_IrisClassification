@@ -9,14 +9,9 @@ from sklearn.metrics import accuracy_score, confusion_matrix, classification_rep
 df = pd.read_csv("Iris.csv")
 
 print("Dataset Shape:", df.shape)
-df.head()
+print(df.head())
 
-print(df["Species"].value_counts())
-
-# Pairplot visualization
-sns.pairplot(df.drop("Id", axis=1), hue="Species")
-plt.show()
-
+# Features and target
 X = df[["SepalLengthCm","SepalWidthCm","PetalLengthCm","PetalWidthCm"]]
 y = df["Species"]
 
@@ -25,22 +20,22 @@ X_train, X_test, y_train, y_test = train_test_split(
     X, y, test_size=0.2, random_state=42
 )
 
-
+# Train Random Forest model
 model = RandomForestClassifier(n_estimators=100, random_state=42)
 model.fit(X_train, y_train)
+
+# Predictions
 y_pred = model.predict(X_test)
 
+# Evaluation
 print("✅ Accuracy:", accuracy_score(y_test, y_pred))
 print("\nConfusion Matrix:\n", confusion_matrix(y_test, y_pred))
 print("\nClassification Report:\n", classification_report(y_test, y_pred))
 
+# Confusion Matrix Heatmap
 cm = confusion_matrix(y_test, y_pred)
 sns.heatmap(cm, annot=True, cmap="Blues", xticklabels=model.classes_, yticklabels=model.classes_)
 plt.xlabel("Predicted")
 plt.ylabel("Actual")
 plt.title("Confusion Matrix Heatmap")
 plt.show()
-
-# 🎯 Conclusion
-The Random Forest model achieves high accuracy (~95%) on the Iris dataset.  
-This project demonstrates basic classification concepts in machine learning and is part of the CodeAlpha Internship.
